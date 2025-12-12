@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sentry_flutter/sentry_flutter.dart'; // <-- 1. ДОДАЙТЕ ЦЕЙ ІМПОРТ
 import '../models/setting_model.dart';
 import '../widgets/sidebar.dart';
 
@@ -123,71 +122,6 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-
-
-                    // Картка для тестування
-                    _SettingsCard(
-                      icon: Icons.bug_report_outlined,
-                      title: 'Тестування звітів про помилки',
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Text('Використовуйте ці кнопки, щоб надіслати тестові помилки в Sentry.'),
-                          const SizedBox(height: 20),
-                        
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              try {
-                                
-                                throw StateError('Це тестова НЕКРИТИЧНА помилка з налаштувань!');
-                              } catch (exception, stackTrace) {
-                               
-                                await Sentry.captureException(
-                                  exception,
-                                  stackTrace: stackTrace,
-                                );
-                            
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Некритичну помилку відправлено в Sentry!'),
-                                      backgroundColor: Colors.blue,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            icon: const Icon(Icons.warning_amber),
-                            label: const Text('Згенерувати некритичну помилку'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.amber.shade700,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Кнопка для критичної помилки (крешу)
-                          ElevatedButton.icon(
-                            onPressed: () {
-                
-                              throw Exception('Це тестова КРИТИЧНА помилка (креш) з налаштувань!');
-                            },
-                            icon: const Icon(Icons.error_outline),
-                            label: const Text('Згенерувати критичну помилку (креш)'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red.shade700,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                 
 
                     // Картка "Небезпечна зона" 
                     _DangerZoneCard(),
